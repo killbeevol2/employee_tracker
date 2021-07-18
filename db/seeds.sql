@@ -10,8 +10,8 @@ VALUES
 INSERT INTO role
 (title, salary, department_id)
 VALUES
-("Manager", 9999, 1)
-("Security Analyst", 200, 1)
+("Manager", 9999, 1),
+("Security Analyst", 200, 1),
 ("Marketing Manager", 9998, 2),
 ("Marketing Supervisor", 7000, 2),
 ("Engineering Manager", 5000, 3),
