@@ -47,3 +47,12 @@ const start = () => {
       }
     });
 };
+
+const viewAllDepartments = () => {
+  // call db query for viewAllDepartments
+  db.viewAllDepartments().then((departments) => {
+    console.table(departments);
+  });
+};
+
+start();
