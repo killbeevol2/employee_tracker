@@ -27,8 +27,17 @@ class DB {
       `INSERT INTO role (title, salary, department_id) VALUES ("${role.title}", ${role.salary}, ${role.department})`
     );
   }
-  addEmployee() {
-    return this.connection.query();
+  addEmployee(employee) {
+    return this.connection.query(
+      `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${employee.fName}", "${employee.lName}", ${employee.role}, ${employee.manager})`
+    );
+  }
+  updateEmployeeRole(employee) {
+    return this.connection.query(
+      `UPDATE employee
+       SET role_id = ${employee.role}
+       WHERE id = ${employee.id};`
+    );
   }
 }
 module.exports = new DB(connection);

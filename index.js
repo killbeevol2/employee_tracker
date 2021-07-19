@@ -40,7 +40,7 @@ const start = () => {
           addEmployee();
           break;
         case "Update an employee role":
-          updateEmployee();
+          updateEmployeeRole();
           break;
         default:
           console.log("Thank you!");
@@ -199,11 +199,10 @@ const addEmployee = async () => {
       },
     ])
     .then((employee) => {
+      const i = roles.findIndex((role) => role.title === employee.role);
+      const rId = roles[i].id;
+      employee.role = rId;
       if (employee.manager !== "NULL") {
-        const i = roles.findIndex((role) => role.title === employee.role);
-        const rId = roles[i].id;
-        employee.role = rId;
-
         const j = managers.findIndex(
           (manager) =>
             manager.first_name === employee.manager.split(" ")[0] &&
@@ -219,8 +218,43 @@ const addEmployee = async () => {
     });
 };
 
-const updateEmployee = () => {
-  // prompt user to update employee
+const updateEmployeeRole = async () => {
+  const employees = await db.viewAllEmployees();
+  const roles = await db.viewAllRoles();
+  // prompt user to update employee info
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "id",
+        message: "Which employee would you like to update?",
+        choices: employees.map((employee) => {
+          return employee.first_name + " " + employee.last_name;
+        }),
+      },
+      {
+        type: "list",
+        name: "role",
+        message: "Which role would you like to update to?",
+        choices: roles.map((role) => role.title),
+      },
+    ])
+    .then((res) => {
+      const i = roles.findIndex((role) => role.title === res.role);
+      const rId = roles[i].id;
+      res.role = rId;
+      const j = employees.findIndex(
+        (employee) =>
+          employee.first_name === res.id.split(" ")[0] &&
+          employee.last_name === res.id.split(" ")[1]
+      );
+      const eId = employees[j].id;
+      res.id = eId;
+      db.updateEmployeeRole(res).then(() => {
+        console.log("Successfully updated an employee!");
+        start();
+      });
+    });
 };
 
 start();
