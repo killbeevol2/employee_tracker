@@ -16,6 +16,7 @@ const start = () => {
         "Add a role",
         "Add an employee",
         "Update an employee role",
+        "Exit",
       ],
     })
     .then((res) => {
@@ -42,8 +43,8 @@ const start = () => {
           updateEmployee();
           break;
         default:
-          console.log("Function broke!");
-          throw Error("Option not available!");
+          console.log("Thank you!");
+          return process.exit(0);
       }
     });
 };
@@ -74,10 +75,38 @@ const viewAllEmployees = () => {
 
 const addDepartment = () => {
   // prompt user for department info
+  inquirer
+    .prompt({
+      type: "input",
+      name: "depName",
+      message: "What department would you like to add?",
+      validate: (depNameInput) => {
+        if (depNameInput) {
+          return true;
+        } else {
+          console.log("Please enter a department name!");
+          return false;
+        }
+      },
+    })
+    .then((department) => {
+      db.addDepartment(department.depName).then((data) => {
+        console.log("Successfully added department!");
+        start();
+      });
+    });
 };
 
 const addRole = () => {
   // prompt user for role info
+};
+
+const addEmployee = () => {
+  // prompt user for employee info
+};
+
+const updateEmployee = () => {
+  // prompt user to update employee
 };
 
 start();
