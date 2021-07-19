@@ -22,6 +22,13 @@ class DB {
       `INSERT INTO department (name) VALUES ("${name}")`
     );
   }
+  addRole(role) {
+    return this.connection.query(
+      `INSERT INTO role (title, salary, department_id) VALUES ("${role.title}", ${role.salary}, ${role.department})`
+    );
+  }
+  addEmployee() {
+    return this.connection.query();
+  }
 }
-
 module.exports = new DB(connection);
